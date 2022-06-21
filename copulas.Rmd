@@ -1,0 +1,49 @@
+---
+title: "copulas"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Intro  
+
+This is a dive into the use of copulas and how one might get started down the useful rabbit hole of multivariate flood frequency analysis. Univariate flood frequency analysis is a common statistical procedure in hydrology where the outcome (probability of occurrence) is modeled by annual maximum (AM) samples or points over threshold (POT) (also, partial duration series (PDS)). However, limiting this analysis to only one variable (typically annual peak flows, rainfall, etc) lends itself to potential over -underestimation of risk (Yue and Rasmussen (2002)). Traditionally this is alleviated by multivariate Gaussian techniques (or others) albeit variables don't always follow a Gaussian distribution, i.e. there have been other methods developed but parent distributions must be the same and more than 2 dimensions is difficult (Favre et al. (2004)). This is where copulas shines! With effort, it can take variables from different parent distributions and multiple dimensions to provide a multivariate CDF/PDF!  
+
+## Methods  
+
+We will try and follow the framework outlined by Tootoonchi et al. (2022) where they provide a step-by-step workflow for dealing with copulas in a hydrology context. In short, they lay out a guide described below;
+
+_"Derived from the literature review, we identified four common practical steps in copula analyses include: (1) exploratory
+analysis of the dependence between two variables, (2) pretreatment of the data, (3) copula selection and parameter estimation, and (4) goodness-of-fit examination of selected copula models."_  
+
+`r tufte::quote_footer('**--- Tootoonchi et al. (2022)**')` 
+<br>
+Thus, we'll break it down into these steps.  
+
+1. Dependence.  
+2. Pretreatment. 
+3. Selection and parameter estimation.  
+4. Goodness-of-fit.  
+
+## Dependance  
+
+With any statistical approach it's always good to do an exploratory dive into the variables that you are going to use, e.g. central tendency, dispersion, skewness and tailedness. As such, with bivariate modeling you might want to know how your variables might correlate with one another, right? If your variables are _uncorrelated_ then it might not make sense to use them in your model. Common practices include the Pearson correlation coefficient (PCC) where the model finds a linear correlation between variables. This is great if your data follows a normal distribution and is linear but what do we do when these assumptions are violated? Well lucky us, there are a couple ways that you can; Spearman's $\rho$ and Kendall's $\tau$.
+
+### Univariate PDF/CDF  
+
+First we need to run some tests (stationarity, autocorrelation) to see if our dependent variables meet these assumptions. From there, we can then use methods to test the marginals for parent distribution and goodness-of-fit. This will give us the CDF of each marginal from which we can then use as the __u__ and __v__ within $C(u,v)$ for copulas. The reason for using the CDF is now the data is transformed into pseudo-observations (scale $[0,1]$) and we can then use this form (uniform distributions) for copulas. This is really useful since we can have marginal distributions that come from different parent distributions, e.g. log-pearson type III vs Gumbel.  
+
+## Dependant Variables  
+
+
+## References  
+
+De Michele, C., et al. "Bivariate statistical approach to check adequacy of dam spillway." Journal of Hydrologic Engineering 10.1 (2005): 50-57.  
+
+Favre, Anne‐Catherine, et al. "Multivariate hydrological frequency analysis using copulas." Water resources research 40.1 (2004).  
+
+Tootoonchi, Faranak, et al. "Copulas for hydroclimatic analysis: A practice‐oriented overview." Wiley Interdisciplinary Reviews: Water 9.2 (2022): e1579.  
+
+Yue, Sheng, and Peter Rasmussen. "Bivariate frequency analysis: discussion of some useful concepts in hydrological application." Hydrological Processes 16.14 (2002): 2881-2898.
